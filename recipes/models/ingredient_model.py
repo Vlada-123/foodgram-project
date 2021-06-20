@@ -1,8 +1,11 @@
+from django.core.validators import MinValueValidator
 from django.db import models
+
+from . import Recipe
 
 
 class Ingredient(models.Model):
-    """Модель ингредиента рецепта.
+    """Общая модель ингредиента рецепта.
 
     Данные об ингредиентах хранятся в нескольких связанных таблицах.
     На стороне пользователя ингредиент описывается полями:
@@ -15,7 +18,7 @@ class Ingredient(models.Model):
                             max_length=128,
                             unique=True,
                             verbose_name='название')
-    unit_of_measurement = models.ForeignKey('UnitOfMeasurement',
+    unit_of_measurement = models.ForeignKey('MeasurementUnit',
                                             null=True,
                                             on_delete=models.SET_NULL,
                                             related_name='ingredients',
@@ -35,8 +38,32 @@ class Ingredient(models.Model):
         return f'{self.name} ({self.unit_of_measurement})'
 
 
-class UnitOfMeasurement(models.Model):
-    """Вспомогательная модель единицы изменения для ингредиента рецепта."""
+class RecipeIngredient(models.Model):
+    """Производная модель ингредиента конкретного рецепта."""
+    ingredient = models.ForeignKey(Ingredient,
+                                   on_delete=models.CASCADE,
+                                   verbose_name='ингредиент')
+    recipe = models.ForeignKey(Recipe,
+                               on_delete=models.CASCADE,
+                               related_name='recipe_ingredient',
+                               verbose_name='рецепт')
+    quantity = models.DecimalField(
+        validators=[MinValueValidator(1)],
+        verbose_name='количество'
+    )
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=['ingredient', 'recipe'],
+                name='unique_ingredient_recipe')
+        ]
+        verbose_name = 'ингредиент рецепта'
+        verbose_name_plural = 'ингредиенты рецепта'
+
+
+class MeasurementUnit(models.Model):
+    """Вспомогательная модель единицы измерения для ингредиента рецепта."""
     name = models.CharField(max_length=16,
                             unique=True,
                             verbose_name='название единицы измерения')
