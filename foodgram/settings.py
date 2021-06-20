@@ -21,8 +21,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'api',
-    'recipes',
+    # 'api',
+    # 'recipes',
     'rest_framework',
 ]
 
