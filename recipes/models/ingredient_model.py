@@ -15,7 +15,7 @@ class Ingredient(models.Model):
                             max_length=128,
                             unique=True,
                             verbose_name='название')
-    unit_of_measurement = models.ForeignKey('Measurement',
+    unit_of_measurement = models.ForeignKey('UnitOfMeasurement',
                                             null=True,
                                             on_delete=models.SET_NULL,
                                             related_name='ingredients',
@@ -33,3 +33,17 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return f'{self.name} ({self.unit_of_measurement})'
+
+
+class UnitOfMeasurement(models.Model):
+    """Вспомогательная модель единицы изменения для ингредиента рецепта."""
+    name = models.CharField(max_length=16,
+                            unique=True,
+                            verbose_name='название единицы измерения')
+
+    class Meta:
+        verbose_name = 'единица измерения'
+        verbose_name_plural = 'единицы измерения'
+
+    def __str__(self):
+        return self.name
