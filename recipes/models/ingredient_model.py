@@ -32,4 +32,4 @@ class Ingredient(models.Model):
         verbose_name_plural = 'ингредиенты'
 
     def __str__(self):
-        return f'{self.name}, {self.unit_of_measurement}'
+        return f'{self.name} ({self.unit_of_measurement})'
