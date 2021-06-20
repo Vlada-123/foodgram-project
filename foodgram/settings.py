@@ -21,6 +21,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
+    'api',
+    'recipes',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -41,6 +44,8 @@ INTERNAL_IPS = [
     '127.0.0.1',
     'localhost',
 ]
+
+SITE_ID = 1
 
 
 TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
@@ -105,3 +110,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend'
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',  # noqa
+    'PAGE_SIZE': 10,
+}
