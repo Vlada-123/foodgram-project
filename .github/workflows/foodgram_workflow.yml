@@ -28,5 +28,5 @@ jobs:
     - name: Lint with flake8
       run: python -m flake8 . --exclude ./api/migrations/,./tests/
 
-    - name: Test with pytest
-      run: pytest
+#     - name: Test with pytest
+#       run: pytest
