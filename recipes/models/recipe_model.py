@@ -27,6 +27,7 @@ class Recipe(models.Model):
                                related_name='recipes',
                                verbose_name='автор')
     name = models.CharField(max_length=128,
+                            db_index=True,
                             verbose_name='название')
     image = models.ImageField(blank=True,
                               upload_to='static/images/recipes/%Y/%m/%d',
