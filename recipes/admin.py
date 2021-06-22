@@ -11,15 +11,14 @@ class IngredientAdmin(admin.ModelAdmin):
 
 
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'description', 'cooking_time', 'author',
-                    'ingredients', 'tags', 'slug',)
+    list_display = ('name', 'author',)
     list_filter = ('author', 'name', 'tags',)
     ordering = ('-pub_date', 'name', 'cooking_time',)
     search_fields = ('name', 'description', 'tags', 'ingredients',)
 
 
 class RecipeIngredientAdmin(admin.ModelAdmin):
-    list_display = ('recipe', 'ingredient', 'quantity')
+    list_display = ('recipe', 'ingredient',)
     ordering = ('recipe',)
 
 
