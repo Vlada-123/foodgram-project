@@ -7,6 +7,4 @@ class RecipeForm(forms.ModelForm):
     class Meta:
         model = Recipe
         exclude = ['pub_date', 'slug', 'author', 'ingredients', ]
-        widgets = {
-            'tags': forms.CheckboxSelectMultiple(),
-        }
+        widgets = {'tags': forms.CheckboxSelectMultiple(), }
