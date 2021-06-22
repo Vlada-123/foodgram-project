@@ -1,7 +1,7 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from .views import *
+from .views import FavoriteViewSet, IngredientViewSet, RecipeViewSet, UserViewSet  # noqa
 
 router = routers.DefaultRouter()
 router.register(r'favorites',
