@@ -1,0 +1,28 @@
+{% extends '../base.html' %}
+
+{% load static %}
+
+{% block title %}Технологии{% endblock %}
+{% block scripts %}
+<link rel="stylesheet" href="{% static 'css/pages/index.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="custom-center-block">
+  <p class="custom-text-block">При создании проекта были коварно использованы:
+    <ul>
+      <li>Python</li>
+      <li>Django</li>
+      <li>Django REST Framework</li>
+      <li>HTML</li>
+      <li>CSS</li>
+      <li>JS</li>
+      <li>PostgreSQL</li>
+      <li>и отдельные фрагменты свободно доступного кода (спасибо официальной документации, StackOverflow, GitHub и всем-всем-всем)</li>
+    </ul>
+  </p>
+  <div class="custom-button-block">
+    <a class="button button_style_blue" href="{% url 'home' %}">Перейти на главную</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Список покупок</title>
+</head>
+{% load static %}
+<body>
+<h1 align="center">Список покупок</h1>
+<style type="text/css">
+  body {
+    background: white;
+  }
+  table {
+    width: 100%;
+    border: 2px solid white;
+    border-collapse: collapse;
+  }
+  td, th {
+    padding: 3px;
+    border: 1px solid green;
+    text-align: left;
+  }
+</style>
+<table align="center">
+  <tr>
+    <th>№</th>
+    <th>Наименование</th>
+    <th>Количество</th>
+  </tr>
+  {% for item in ingredients %}
+  <tr>
+    <td>{{ forloop.counter }}</td>
+    <td>{{ item.ingredients__name|capfirst }}</td>
+    <td>{{ item.amount }} {{ item.ingredients__unit_of_measurement__name }}</td>
+  </tr>
+  {% endfor %}
+</table>
+</body>
+</html>
