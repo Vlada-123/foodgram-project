@@ -36,7 +36,7 @@ def home(request):
     return render(request, 'index.html', context)
 
 
-def recipe_detail(request, slug, user_id):
+def recipe_details(request, slug, user_id):
     """Страница рецепта."""
     recipe = get_object_or_404(Recipe, slug=slug, author__pk=user_id)
     context = {'recipe': recipe}
