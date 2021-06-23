@@ -96,6 +96,8 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+SHOPLIST_SESSION_NAME = 'shoplist'
+
 
 LANGUAGE_CODE = 'ru-ru'
 

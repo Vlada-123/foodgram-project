@@ -10,14 +10,14 @@
 </div>
 <div class="card-list card-list_column">
     <ul class="shopping-list">
-        {% for recipe in cart %}
+        {% for recipe in shoplist %}
         <li class="shopping-list__item" data-id="{{ recipe.recipe.pk}}">
             {% include 'includes/card_recipe_small.html' with recipe=recipe %}
         </li>
         {% endfor %}
     </ul>
-    {% if cart %}
-    <a href="{% url 'cart:cart_download' %}"><button class="button button_style_blue">Скачать список</button></a>
+    {% if shoplist %}
+    <a href="{% url 'shoplist:shoplist_download' %}"><button class="button button_style_blue">Скачать список</button></a>
     {% else %}
     <p>В списке пока пусто. Можете наполнить его со <a href="{% url 'home' %}">страницы рецептов</a></p>
     {% endif %}

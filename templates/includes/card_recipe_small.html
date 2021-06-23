@@ -6,4 +6,4 @@
   <h3 class="recipe__title">{{ recipe.recipe.name }}</h3>
   <p class="recipe__text"><span class="icon-time"></span> {{ recipe.recipe.cooking_time }} мин.</p>
 </div>
-<a href="{% url 'cart:cart_remove' recipe.recipe.pk %}" class="shopping-list__button link">Удалить</a>
+<a href="{% url 'shoplist:shoplist_remove' recipe.recipe.pk %}" class="shopping-list__button link">Удалить</a>
