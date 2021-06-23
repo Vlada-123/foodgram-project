@@ -33,7 +33,7 @@ class Tag(models.Model):
     def clean(self, *args, **kwargs):
         colors = {'breakfast': 'orange', 'lunch': 'green', 'dinner': 'purple'}
         color = colors.get(str(self.name), 'blue')
-        names = {'breakfast': 'Завтрак', 'lunch': 'Обед', 'dinner': 'Ужин'}
+        names = {'breakfast': 'завтрак', 'lunch': 'обед', 'dinner': 'ужин'}
         show_name = names.get(str(self.name))
         self.color = color
         self.show_name = show_name
