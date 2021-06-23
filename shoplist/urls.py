@@ -2,6 +2,8 @@ from django.urls import path
 
 from . import views
 
+app_name = 'shoplist'
+
 urlpatterns = [
     path('',
          views.shoplist_details,
@@ -13,6 +15,6 @@ urlpatterns = [
          views.shoplist_remove,
          name='shoplist_remove'),
     path('download/',
-         views.cart_download,
+         views.shoplist_download,
          name='shoplist_download'),
 ]
