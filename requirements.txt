@@ -5,6 +5,7 @@ colorama==0.4.4
 Django==3.2.4
 django-autoslug==1.9.8
 django-debug-toolbar==3.2.1
+django-filter==2.4.0
 djangorestframework==3.12.4
 flake8==3.9.2
 flake8-broken-line==0.3.0
@@ -16,7 +17,9 @@ iniconfig==1.1.1
 isort==5.8.0
 mccabe==0.6.1
 packaging==20.9
+pdfkit==0.6.1
 pep8-naming==0.11.1
+Pillow==8.2.0
 pluggy==0.13.1
 py==1.10.0
 pycodestyle==2.7.0

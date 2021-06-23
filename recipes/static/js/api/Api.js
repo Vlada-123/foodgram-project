@@ -19,7 +19,7 @@ class Api {
         this.apiUrl =  apiUrl;
     }
   getPurchases () {
-    return fetch(`/cart/`, {
+    return fetch(`/shoplist/`, {
       headers: {
         'Content-Type': 'application/json'
       }
@@ -32,7 +32,7 @@ class Api {
       })
   }
   addPurchases (id) {
-    return fetch(`/cart/add/`, {
+    return fetch(`/shoplist/add/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ class Api {
       })
   }
   removePurchases (id){
-    return fetch(`/cart/remove/${id}`, {
+    return fetch(`/shoplist/remove/${id}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

@@ -33,10 +33,10 @@ class ShopList:
     def __iter__(self):
         recipe_ids = self.shoplist.keys()
         recipes = Recipe.objects.filter(id__in=recipe_ids)
-        cart = self.shoplist.copy()
+        shoplist = self.shoplist.copy()
         for recipe in recipes:
-            cart[str(recipe.id)]['recipe'] = recipe
-        for item in cart.values():
+            shoplist[str(recipe.id)]['recipe'] = recipe
+        for item in shoplist.values():
             yield item
 
     def __len__(self):
