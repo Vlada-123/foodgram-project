@@ -4,7 +4,8 @@ from recipes.models import Ingredient
 
 
 class IngredientSerializer(serializers.ModelSerializer):
-    unit_of_measurement = serializers.SlugRelatedField(slug_field='name')
+    unit_of_measurement = serializers.SlugRelatedField(read_only=True,
+                                                       slug_field='name')
 
     class Meta:
         model = Ingredient

@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'debug_toolbar',
+    'about',
     'api',
     'recipes',
     'shoplist',
