@@ -5,6 +5,10 @@ from slugify import slugify
 from . import Ingredient
 
 
+def translate_slugify(value):
+    return slugify(value)
+
+
 class Recipe(models.Model):
     """Модель рецепта.
 
@@ -45,7 +49,7 @@ class Recipe(models.Model):
     )
     slug = AutoSlugField(max_length=128,
                          populate_from='name',
-                         slugify=slugify,
+                         slugify=translate_slugify,
                          unique_with='author__username',
                          verbose_name='slug')
     pub_date = models.DateTimeField(auto_now_add=True,

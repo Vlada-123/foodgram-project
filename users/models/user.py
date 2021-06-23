@@ -7,7 +7,7 @@ from django.db import models
 class User(AbstractUser):
     """Модель пользователя."""
     following = models.ManyToManyField('self',
-                                       through='Contact',
+                                       through='Connection',
                                        related_name='followers',
                                        symmetrical=False,
                                        verbose_name='подписки')

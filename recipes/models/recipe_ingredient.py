@@ -14,6 +14,8 @@ class RecipeIngredient(models.Model):
                                related_name='recipe_ingredient',
                                verbose_name='рецепт')
     quantity = models.DecimalField(
+        max_digits=5,
+        decimal_places=1,
         validators=[MinValueValidator(1)],
         verbose_name='количество'
     )
