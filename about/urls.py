@@ -9,6 +9,6 @@ urlpatterns = [
          views.AboutAuthorView.as_view(),
          name='author'),
     path('tech/',
-         views.AboutTechView.as_view(),
+         views.AboutTechnologiesView.as_view(),
          name='tech'),
 ]

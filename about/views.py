@@ -5,5 +5,5 @@ class AboutAuthorView(TemplateView):
     template_name = 'about/about_author.html'
 
 
-class AboutTechView(TemplateView):
+class AboutTechnologiesView(TemplateView):
     template_name = 'about/about_spec.html'
