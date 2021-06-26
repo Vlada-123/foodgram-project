@@ -7,7 +7,7 @@ from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 from foodgram.settings import RECORDS_ON_PAGE
-from recipes.forms.create_recipe import RecipeForm
+from recipes.forms.recipe_form import RecipeForm
 from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
 from users.models import User
 

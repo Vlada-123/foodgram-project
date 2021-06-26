@@ -1,1 +1,1 @@
-from .create_recipe import RecipeForm  # noqa
+from .recipe_form import RecipeForm  # noqa
