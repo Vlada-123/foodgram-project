@@ -35,10 +35,8 @@ class Connection(models.Model):
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(
-                fields=['user_from', 'user_to'],
-                name='unique_follow')
-        ]
+            models.UniqueConstraint(fields=['user_from', 'user_to'],
+                                    name='unique_follow')]
         ordering = ('-created',)
         verbose_name = 'подписка'
         verbose_name_plural = 'подписки'

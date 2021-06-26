@@ -1,1 +1,1 @@
-from .signup import CreationForm  # noqa
+from .signup_form import CreationForm  # noqa

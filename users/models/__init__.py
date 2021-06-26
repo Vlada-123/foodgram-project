@@ -1,1 +1,1 @@
-from .user import Connection, User  # noqa
+from .user_model import Connection, User  # noqa
