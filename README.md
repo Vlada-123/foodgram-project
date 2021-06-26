@@ -16,9 +16,9 @@
 ```
 git clone https://github.com/drowsycoder/foodgram-project.git
 ```
-1. Загрузка контейнеров с [DockerHub](https://hub.docker.com/repository/docker/drowzycoder/infra_sp2). Запуск (из корневой директории проекта при активном Docker):
+1. Загрузка контейнеров с [DockerHub](https://hub.docker.com/repository/docker/drowzycoder/foodgram_project). Запуск (из корневой директории проекта при активном Docker):
 ```
-docker pull drowzycoder/foodgram-project
+docker pull drowzycoder/foodgram_project
 docker-compose up -d --build
 ```
 2. Вход в командную оболочку внутри контейнера:
