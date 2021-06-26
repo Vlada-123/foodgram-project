@@ -23,12 +23,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+    'rest_framework',
     'debug_toolbar',
+    'sorl.thumbnail',
     'about',
     'api',
     'recipes',
     'shoplist',
-    'rest_framework',
 ]
 
 MIDDLEWARE = [
