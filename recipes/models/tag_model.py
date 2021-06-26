@@ -25,7 +25,7 @@ class Tag(models.Model):
 
     class Meta:
         verbose_name = 'тег'
-        verbose_name_plural = 'Теги'
+        verbose_name_plural = 'теги'
 
     def __str__(self):
         return self.name
@@ -38,7 +38,7 @@ class Tag(models.Model):
         names = {'breakfast': 'завтрак',
                  'dinner': 'ужин',
                  'lunch': 'обед'}
-        show_name = names.get(str(self.name))
+        show_name = names.get(str(self.name)).title()
         self.color = color
         self.show_name = show_name
         super(Tag, self).clean()
