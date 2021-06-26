@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.views.decorators.http import require_http_methods, require_POST
+from django.views.decorators.http import require_POST, require_http_methods
 
 from foodgram import settings
 from users.models import Connection, User
@@ -27,8 +27,8 @@ def subscriptions(request):
     return render(request, 'subscriptions.html', context)
 
 
-@require_POST
 @login_required
+@require_POST
 def add_subscription(request):
     """Добавление подписки."""
     user_id = json.loads(request.body).get('id')
@@ -42,8 +42,8 @@ def add_subscription(request):
     return JsonResponse({'success': True})
 
 
-@require_http_methods(['DELETE', ])
 @login_required
+@require_http_methods(['DELETE', ])
 def remove_subscription(request, user_id):
     """Удаление подписки."""
     user_to = get_object_or_404(User, id=user_id)
