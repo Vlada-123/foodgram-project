@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.db.models import Count
 from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render
-from django.views.decorators.http import require_POST, require_http_methods
+from django.views.decorators.http import require_http_methods, require_POST
 
 from foodgram import settings
 from users.models import Connection, User
