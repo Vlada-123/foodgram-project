@@ -22,11 +22,10 @@ class Ingredient(models.Model):
                                             verbose_name='единицы измерения')
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['name', 'unit_of_measurement'],
-                name='unique_ingredient')
-        ]
+        constraints = [models.UniqueConstraint(
+            fields=['name', 'unit_of_measurement'],
+            name='unique_ingredient'
+        )]
         ordering = ['name', ]
         verbose_name = 'ингредиент'
         verbose_name_plural = 'ингредиенты'

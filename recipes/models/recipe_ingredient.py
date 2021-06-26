@@ -13,18 +13,15 @@ class RecipeIngredient(models.Model):
                                on_delete=models.CASCADE,
                                related_name='recipe_ingredient',
                                verbose_name='рецепт')
-    quantity = models.DecimalField(
-        max_digits=5,
-        decimal_places=1,
-        validators=[MinValueValidator(1)],
-        verbose_name='количество'
-    )
+    quantity = models.DecimalField(max_digits=5,
+                                   decimal_places=1,
+                                   validators=[MinValueValidator(1)],
+                                   verbose_name='количество')
 
     class Meta:
-        constraints = [
-            models.UniqueConstraint(
-                fields=['ingredient', 'recipe'],
-                name='unique_ingredient_recipe')
-        ]
+        constraints = [models.UniqueConstraint(
+            fields=['ingredient', 'recipe'],
+            name='unique_ingredient_recipe'
+        )]
         verbose_name = 'ингредиент рецепта'
         verbose_name_plural = 'ингредиенты рецепта'

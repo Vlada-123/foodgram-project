@@ -31,9 +31,13 @@ class Tag(models.Model):
         return self.name
 
     def clean(self, *args, **kwargs):
-        colors = {'breakfast': 'orange', 'lunch': 'green', 'dinner': 'purple'}
+        colors = {'breakfast': 'orange',
+                  'dinner': 'purple',
+                  'lunch': 'green'}
         color = colors.get(str(self.name), 'blue')
-        names = {'breakfast': 'завтрак', 'lunch': 'обед', 'dinner': 'ужин'}
+        names = {'breakfast': 'завтрак',
+                 'dinner': 'ужин',
+                 'lunch': 'обед'}
         show_name = names.get(str(self.name))
         self.color = color
         self.show_name = show_name

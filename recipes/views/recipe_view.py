@@ -11,11 +11,9 @@ from recipes.forms.recipe_form import RecipeForm
 from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
 from users.models import User
 
-TAGS = [
-    Tag.TagChoices.BREAKFAST,
-    Tag.TagChoices.LUNCH,
-    Tag.TagChoices.DINNER,
-]
+TAGS = [Tag.TagChoices.BREAKFAST,
+        Tag.TagChoices.LUNCH,
+        Tag.TagChoices.DINNER, ]
 
 
 def home(request):
@@ -27,12 +25,10 @@ def home(request):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
-    context = {
-        'all_tags': Tag.objects.all(),
-        'page': page,
-        'paginator': paginator,
-        'tags': tags,
-    }
+    context = {'all_tags': Tag.objects.all(),
+               'page': page,
+               'paginator': paginator,
+               'tags': tags, }
     return render(request, 'index.html', context)
 
 
@@ -141,13 +137,11 @@ def profile(request, user_id):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
-    context = {
-        'all_tags': Tag.objects.all(),
-        'author': author,
-        'page': page,
-        'paginator': paginator,
-        'tags': tags,
-    }
+    context = {'all_tags': Tag.objects.all(),
+               'author': author,
+               'page': page,
+               'paginator': paginator,
+               'tags': tags, }
     return render(request, 'profile.html', context)
 
 
@@ -162,10 +156,8 @@ def favorites(request):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
-    context = {
-        'all_tags': Tag.objects.all(),
-        'page': page,
-        'paginator': paginator,
-        'tags': tags,
-    }
+    context = {'all_tags': Tag.objects.all(),
+               'page': page,
+               'paginator': paginator,
+               'tags': tags, }
     return render(request, 'index.html', context)
