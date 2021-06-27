@@ -45,9 +45,7 @@ def add_subscription(request):
 def remove_subscription(request, user_id):
     user_to = get_object_or_404(User, id=user_id)
     user_from = request.user
-
-    if not Connection.objects.filter(user_to=user_to,
-                                     user_from=user_from).exists():
-        return JsonResponse({'success': False})
-    Connection.objects.get(user_to=user_to, user_from=user_from).delete()
-    return JsonResponse({'success': True})
+    success = Connection.objects.filter(
+        user_to=user_to, user_from=user_from
+    ).delete()
+    return JsonResponse({'success': bool(success)})
