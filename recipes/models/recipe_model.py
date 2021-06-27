@@ -2,11 +2,9 @@ from autoslug import AutoSlugField
 from django.db import models
 from slugify import slugify
 
+from recipes.utils import translate_slugify
+
 from . import Ingredient
-
-
-def translate_slugify(value):
-    return slugify(value)
 
 
 class Recipe(models.Model):
