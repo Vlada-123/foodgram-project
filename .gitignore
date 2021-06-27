@@ -130,4 +130,3 @@ dmypy.json
 
 # Additional ignored directories and files
 .idea/
-static/
