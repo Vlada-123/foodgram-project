@@ -2,7 +2,6 @@ from django.db import models
 
 
 class Tag(models.Model):
-
     class TagChoices(models.TextChoices):
         BREAKFAST = ('breakfast', 'завтрак')
         LUNCH = ('lunch', 'обед')
@@ -36,8 +35,8 @@ class Tag(models.Model):
         show_name = names.get(str(self.name)).title()
         self.color = color
         self.show_name = show_name
-        super(Tag, self).clean()
+        super().clean()
 
     def save(self, *args, **kwargs):
         self.clean(*args, **kwargs)
-        super(Tag, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)

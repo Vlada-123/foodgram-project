@@ -50,4 +50,4 @@ class Recipe(models.Model):
     def save(self, *args, **kwargs):
         if not self.pk:
             self.slug = slugify(self.name)
-        super(Recipe, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
