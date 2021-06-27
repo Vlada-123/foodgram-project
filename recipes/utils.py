@@ -24,7 +24,7 @@ def get_ingredients(request):
 def save_recipe(request, form, author=None, is_edit=False):
     try:
         recipe = form.save(commit=False)
-        recipe.author = author if author else request.user
+        recipe.author = author or request.user
         recipe.save()
 
         if is_edit:
