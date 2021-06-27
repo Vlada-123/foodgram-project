@@ -42,11 +42,11 @@ class Connection(models.Model):
     def clean(self, *args, **kwargs):
         if self.user_to == self.user_from:
             raise ValidationError('На себя подписываться нельзя!')
-        super(Connection, self).clean()
+        super().clean()
 
     def save(self, *args, **kwargs):
         self.clean(*args, **kwargs)
-        super(Connection, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return '{} следит за {}'.format(self.user_from, self.user_to)
