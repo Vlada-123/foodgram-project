@@ -32,12 +32,10 @@ def add_subscription(request):
     user_id = json.loads(request.body).get('id')
     user_to = get_object_or_404(User, id=user_id)
     user_from = request.user
-
-    if Connection.objects.filter(user_to=user_to,
-                                 user_from=user_from).exists():
-        return JsonResponse({'success': False})
-    Connection(user_to=user_to, user_from=user_from).save()
-    return JsonResponse({'success': True})
+    success = Connection.objects.get_or_create(
+        user_to=user_to, user_from=user_from
+    ).save()
+    return JsonResponse({'success': bool(success)})
 
 
 @login_required
