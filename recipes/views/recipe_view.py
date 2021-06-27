@@ -1,14 +1,11 @@
-from decimal import Decimal
-
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.db import IntegrityError, transaction
-from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render, reverse
 
 from foodgram.settings import RECORDS_ON_PAGE
 from recipes.forms.recipe_form import RecipeForm
-from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
+from recipes.models import Recipe, Tag
+from recipes.utils import save_recipe
 from users.models import User
 
 TAGS = [Tag.TagChoices.BREAKFAST,
@@ -35,47 +32,6 @@ def recipe_details(request, slug, user_id):
     recipe = get_object_or_404(Recipe, slug=slug, author__pk=user_id)
     context = {'recipe': recipe}
     return render(request, 'recipe.html', context)
-
-
-def get_ingredients(request):
-    result = {}
-    for key, value in request.POST.items():
-        if key.startswith('nameIngredient'):
-            num = key.split('_')[1]
-            result[value] = request.POST[f'valueIngredient_{num}']
-    return result
-
-
-def save_recipe(request, form, author=None, is_edit=False):
-    try:
-        recipe = form.save(commit=False)
-        recipe.author = author if author else request.user
-        recipe.save()
-
-        if is_edit:
-            tmp_ingredients = RecipeIngredient.objects.filter(
-                recipe=recipe
-            ).delete()
-
-        with transaction.atomic():
-            ingredients = get_ingredients(request)
-            recipe_ingredients = []
-            for name, quantity in ingredients.items():
-                ingredient = get_object_or_404(Ingredient, name=name)
-                obj = RecipeIngredient(
-                    recipe=recipe,
-                    ingredient=ingredient,
-                    quantity=abs(Decimal(quantity.replace(',', '.')))
-                )
-                recipe_ingredients.append(obj)
-            RecipeIngredient.objects.bulk_create(recipe_ingredients)
-            form.save_m2m()
-            return recipe
-
-    except IntegrityError:
-        if is_edit:
-            RecipeIngredient.objects.bulk_create(tmp_ingredients)
-        return HttpResponseBadRequest
 
 
 @login_required
