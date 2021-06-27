@@ -5,7 +5,6 @@ from . import Ingredient, Recipe
 
 
 class RecipeIngredient(models.Model):
-    """Производная модель ингредиента конкретного рецепта."""
     ingredient = models.ForeignKey(Ingredient,
                                    on_delete=models.CASCADE,
                                    verbose_name='ингредиент')

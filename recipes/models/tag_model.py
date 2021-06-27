@@ -2,11 +2,6 @@ from django.db import models
 
 
 class Tag(models.Model):
-    """Модель тега для рецепта.
-
-    Для рецепта можно установить несколько тегов.
-    Теги выбираются из предустановленных.
-    """
 
     class TagChoices(models.TextChoices):
         BREAKFAST = ('breakfast', 'завтрак')

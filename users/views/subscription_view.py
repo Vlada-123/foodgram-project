@@ -13,7 +13,6 @@ from users.models import Connection, User
 
 @login_required
 def subscriptions(request):
-    """Подписки."""
     user_from = request.user
     authors = user_from.following.all().prefetch_related('recipes').annotate(
         recipe_count=Count('recipes')
@@ -30,7 +29,6 @@ def subscriptions(request):
 @login_required
 @require_POST
 def add_subscription(request):
-    """Добавление подписки."""
     user_id = json.loads(request.body).get('id')
     user_to = get_object_or_404(User, id=user_id)
     user_from = request.user
@@ -45,7 +43,6 @@ def add_subscription(request):
 @login_required
 @require_http_methods(['DELETE', ])
 def remove_subscription(request, user_id):
-    """Удаление подписки."""
     user_to = get_object_or_404(User, id=user_id)
     user_from = request.user
 

@@ -5,7 +5,6 @@ from django.db import models
 
 
 class User(AbstractUser):
-    """Модель пользователя."""
     following = models.ManyToManyField('self',
                                        through='Connection',
                                        related_name='followers',
@@ -21,7 +20,6 @@ class User(AbstractUser):
 
 
 class Connection(models.Model):
-    """Модель связей между пользователями."""
     created = models.DateTimeField(auto_now_add=True,
                                    db_index=True)
     user_from = models.ForeignKey(settings.AUTH_USER_MODEL,

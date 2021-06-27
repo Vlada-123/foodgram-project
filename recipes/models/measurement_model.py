@@ -2,7 +2,6 @@ from django.db import models
 
 
 class MeasurementUnit(models.Model):
-    """Вспомогательная модель единицы измерения для ингредиента рецепта."""
     name = models.CharField(max_length=16,
                             unique=True,
                             verbose_name='название единицы измерения')

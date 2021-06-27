@@ -17,7 +17,6 @@ TAGS = [Tag.TagChoices.BREAKFAST,
 
 
 def home(request):
-    """Главная страница."""
     tags = request.GET.getlist('tags', TAGS)
     recipes = Recipe.objects.filter(tags__name__in=tags).distinct()
 
@@ -33,14 +32,12 @@ def home(request):
 
 
 def recipe_details(request, slug, user_id):
-    """Страница рецепта."""
     recipe = get_object_or_404(Recipe, slug=slug, author__pk=user_id)
     context = {'recipe': recipe}
     return render(request, 'recipe.html', context)
 
 
 def get_ingredients(request):
-    """Функция получения ингредиентов. Используется при сохранении рецепта."""
     result = {}
     for key, value in request.POST.items():
         if key.startswith('nameIngredient'):
@@ -50,7 +47,6 @@ def get_ingredients(request):
 
 
 def save_recipe(request, form, author=None, is_edit=False):
-    """Сохранение рецепта. Используется при его создании и редактировании."""
     try:
         recipe = form.save(commit=False)
         recipe.author = author if author else request.user
@@ -84,7 +80,6 @@ def save_recipe(request, form, author=None, is_edit=False):
 
 @login_required
 def create_recipe(request):
-    """Создание рецепта. Требуется авторизация."""
     form = RecipeForm(request.POST or None, files=request.FILES or None)
     if form.is_valid():
         recipe = save_recipe(request, form)
@@ -97,7 +92,6 @@ def create_recipe(request):
 
 @login_required
 def edit_recipe(request, slug, user_id):
-    """Редактирование рецепта. Требуется авторизация."""
     recipe = get_object_or_404(Recipe, slug=slug, author__pk=user_id)
     if request.user != recipe.author and not request.user.is_superuser:
         return redirect(reverse('home'))
@@ -118,7 +112,6 @@ def edit_recipe(request, slug, user_id):
 
 @login_required
 def delete_recipe(request, slug, user_id):
-    """Удаление рецепта. Требуется авторизация."""
     recipe = get_object_or_404(Recipe, slug=slug, author__pk=user_id)
     if (request.user != recipe.author) and not request.user.is_superuser:
         return redirect(reverse('home'))
@@ -127,7 +120,6 @@ def delete_recipe(request, slug, user_id):
 
 
 def profile(request, user_id):
-    """Страница профиля."""
     author = get_object_or_404(User, pk=user_id)
     tags = request.GET.getlist('tags', TAGS)
     recipes = Recipe.objects.filter(author__pk=user_id,
@@ -147,7 +139,6 @@ def profile(request, user_id):
 
 @login_required
 def favorites(request):
-    """Избранное. Требуется авторизация."""
     tags = request.GET.getlist('tags', TAGS)
     recipes = Recipe.objects.filter(favorite_by__user=request.user,
                                     tags__name__in=tags).distinct()
