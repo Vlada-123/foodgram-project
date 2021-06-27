@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}Создание рецепта{% endblock %}
+{% block title %}{% if 'edit' in request.resolver_match.url_name %}Редактирование{% else %}Создание{% endif %} рецепта{% endblock %}
 {% block scripts %}
 {% load static %}
 {% load recipe_filters %}
