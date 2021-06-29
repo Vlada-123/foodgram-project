@@ -12,7 +12,7 @@ def tags_list(get):
 def set_tag_qs(request, tag):
     new_request = request.GET.copy()
     tags = request.GET.getlist('tags')
-    if tag.name in tags:
+    while tag.name in tags:
         tags.remove(tag.name)
     else:
         tags.append(tag.name)
