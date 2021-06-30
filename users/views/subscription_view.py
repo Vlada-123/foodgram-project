@@ -34,7 +34,7 @@ def add_subscription(request):
     user_from = request.user
     success = Connection.objects.get_or_create(
         user_to=user_to, user_from=user_from
-    ).save()
+    )[1]
     return JsonResponse({'success': bool(success)})
 
 
@@ -45,5 +45,5 @@ def remove_subscription(request, user_id):
     user_from = request.user
     success = Connection.objects.filter(
         user_to=user_to, user_from=user_from
-    ).delete()
+    ).delete()[1]
     return JsonResponse({'success': bool(success)})

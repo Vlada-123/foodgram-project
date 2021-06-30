@@ -11,12 +11,12 @@ def tags_list(get):
 @register.filter
 def set_tag_qs(request, tag):
     new_request = request.GET.copy()
-    tags = request.GET.getlist('tags')
-    while tag.name in tags:
+    tags = set(request.GET.getlist('tags'))
+    if tag.name in tags:
         tags.remove(tag.name)
     else:
-        tags.append(tag.name)
-    new_request.setlist('tags', tags)
+        tags.add(tag.name)
+    new_request.setlist('tags', list(tags))
     return new_request.urlencode()
 
 

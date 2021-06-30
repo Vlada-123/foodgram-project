@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render, reverse
 from foodgram.settings import RECORDS_ON_PAGE
 from recipes.forms.recipe_form import RecipeForm
 from recipes.models import Recipe, Tag
-from recipes.utils import save_recipe
+from recipes.utils import get_recipes_by_tags, save_recipe
 from users.models import User
 
 TAGS = [Tag.TagChoices.BREAKFAST,
@@ -15,7 +15,7 @@ TAGS = [Tag.TagChoices.BREAKFAST,
 
 def home(request):
     tags = request.GET.getlist('tags', TAGS)
-    recipes = Recipe.objects.filter(tags__name__in=tags).distinct()
+    recipes = get_recipes_by_tags(tags).distinct()
 
     paginator = Paginator(recipes, RECORDS_ON_PAGE)
     page_number = request.GET.get('page')
@@ -57,7 +57,7 @@ def edit_recipe(request, slug, user_id):
                       instance=recipe)
     if form.is_valid():
         author = recipe.author
-        recipe = save_recipe(request, form, author, is_edit=True)
+        recipe = save_recipe(request, form, author)
         return redirect(reverse('recipe_detail',
                                 kwargs={'slug': recipe.slug,
                                         'user_id': recipe.author.pk}))
@@ -78,8 +78,9 @@ def delete_recipe(request, slug, user_id):
 def profile(request, user_id):
     author = get_object_or_404(User, pk=user_id)
     tags = request.GET.getlist('tags', TAGS)
-    recipes = Recipe.objects.filter(author__pk=user_id,
-                                    tags__name__in=tags).distinct()
+    recipes = get_recipes_by_tags(tags).filter(
+        author__pk=user_id
+    ).distinct()
 
     paginator = Paginator(recipes, RECORDS_ON_PAGE)
     page_number = request.GET.get('page')
@@ -96,8 +97,9 @@ def profile(request, user_id):
 @login_required
 def favorites(request):
     tags = request.GET.getlist('tags', TAGS)
-    recipes = Recipe.objects.filter(favorite_by__user=request.user,
-                                    tags__name__in=tags).distinct()
+    recipes = get_recipes_by_tags(tags).filter(
+        favorite_by__user=request.user
+    ).distinct()
 
     paginator = Paginator(recipes, RECORDS_ON_PAGE)
     page_number = request.GET.get('page')

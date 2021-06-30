@@ -3,7 +3,6 @@ from django.db import models
 from slugify import slugify
 
 from recipes.models import Ingredient
-from recipes.utils import translate_slugify
 
 
 class Recipe(models.Model):
@@ -30,7 +29,7 @@ class Recipe(models.Model):
     )
     slug = AutoSlugField(max_length=128,
                          populate_from='name',
-                         slugify=translate_slugify,
+                         slugify=slugify,
                          unique_with='author__username',
                          verbose_name='slug')
     pub_date = models.DateTimeField(auto_now_add=True,

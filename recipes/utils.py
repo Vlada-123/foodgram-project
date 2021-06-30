@@ -3,13 +3,12 @@ from decimal import Decimal
 from django.db import IntegrityError, transaction
 from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404
-from slugify import slugify
 
-from recipes.models import Ingredient, RecipeIngredient
+from recipes.models import Ingredient, Recipe, RecipeIngredient
 
 
-def translate_slugify(value):
-    return slugify(value)
+def get_recipes_by_tags(tags):
+    return Recipe.objects.filter(tags__name__in=tags)
 
 
 def get_ingredients(request):
@@ -21,18 +20,17 @@ def get_ingredients(request):
     return result
 
 
-def save_recipe(request, form, author=None, is_edit=False):
+def save_recipe(request, form, author=None):
     try:
         recipe = form.save(commit=False)
         recipe.author = author or request.user
-        recipe.save()
 
-        if is_edit:
-            tmp_ingredients = RecipeIngredient.objects.filter(
+        with transaction.atomic():
+            recipe.save()
+            RecipeIngredient.objects.filter(
                 recipe=recipe
             ).delete()
 
-        with transaction.atomic():
             ingredients = get_ingredients(request)
             recipe_ingredients = []
             for name, quantity in ingredients.items():
@@ -48,6 +46,4 @@ def save_recipe(request, form, author=None, is_edit=False):
             return recipe
 
     except IntegrityError:
-        if is_edit:
-            RecipeIngredient.objects.bulk_create(tmp_ingredients)
         return HttpResponseBadRequest
