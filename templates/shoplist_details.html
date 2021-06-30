@@ -19,7 +19,7 @@
     {% if shoplist %}
     <a href="{% url 'shoplist:shoplist_download' %}"><button class="button button_style_blue">Скачать список</button></a>
     {% else %}
-    <p>В списке пока пусто. Можете наполнить его со <a href="{% url 'home' %}">страницы рецептов</a></p>
+    <p>В списке пока пусто.</p><p>Можете наполнить его со <a href="{% url 'home' %}">страницы рецептов</a></p>
     {% endif %}
 </div>
 <script src="{% static 'js/config/config.js' %}"></script>
