@@ -84,14 +84,14 @@
         <div class="form__group">
             <label for="{{ form.body.id_for_label }}" class="form__label">Описание</label>
             <div class="form__field-group">
-                {{ form.body|add_class:'form__textarea' }}
+                {{ form.body }}
                 <span class="form__error">{{ form.body.errors }}</span>
             </div>
         </div>
         <div class="form__group">
             <span class="form__label">Загрузить фото</span>
             <div class="form__field-group">
-                {{ form.image|add_class:'form__file-button' }}
+                {{ form.image }}
                 <span class="form__error">{{ form.image.errors }}</span>
             </div>
         </div>
