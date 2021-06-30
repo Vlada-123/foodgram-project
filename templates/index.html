@@ -17,7 +17,7 @@
     {% endfor %}
 </div>
 {% if request.resolver_match.url_name == 'favorites' and not page %}
-<p>В списке пока пусто.</p><p>Можете наполнить его со <a href="{% url 'home' %}">страницы рецептов</a></p>
+<p>В списке пока пусто.<br>Можете наполнить его со <a href="{% url 'home' %}">страницы рецептов</a></p>
 {% endif %}
 {% if page.has_other_pages %}
     {% include "includes/paginator.html" with items=page paginator=paginator%}

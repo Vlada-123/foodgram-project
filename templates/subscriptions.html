@@ -10,7 +10,7 @@
     </div>
     <div class="card-list">
         {% if not page %}
-        <p>В списке пока пусто.</p><p>Можете наполнить его со <a href="{% url 'home' %}">страницы рецептов</a></p>
+        <p>В списке пока пусто.<br>Можете наполнить его со <a href="{% url 'home' %}">страницы рецептов</a></p>
         {% endif %}
         {% for user_to in page %}
             {% include 'includes/author_page.html' with page=page user_to=user_to %}
