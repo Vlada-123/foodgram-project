@@ -1,14 +1,6 @@
 from django.contrib import admin
 
-from .models import Connection, User
-
-
-class ConnectionAdmin(admin.ModelAdmin):
-    list_display = ('user_from', 'user_to', 'created')
-    list_filter = ('user_from', 'user_to', 'created',)
-    search_fields = ('user_from', 'user_to')
-    ordering = ('created', 'user_from')
-    date_hierarchy = 'created'
+from .models import User
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -21,4 +13,3 @@ class UserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(User, UserAdmin)
-admin.site.register(Connection, ConnectionAdmin)
