@@ -1,20 +1,20 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>{% block title %}{% endblock %}</title>
-    {% block scripts %}{% endblock %}
+    <title>{% block title %}{% endblock %} | Foodgram</title>
+    {% block static %}
+    {% endblock static %}
 </head>
 <body class="body">
-<header class="header">
-    {% include 'includes/nav.html' %}
-</header>
-<main class="main container">
-    {% block content %}{% endblock %}
-</main>
-{% include 'includes/footer.html' %}
+    {% include 'header.html' %}
+    {% block content %}
+    {% endblock content %}
+    {% include 'footer.html' %}
+    {% block js %}
+    {% endblock js %}
 </body>
 </html>

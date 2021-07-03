@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}Технологии{% endblock %}
+{% block static %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock static %}
+{% block content %}
+<body class="body">
+    <main class="main container">
+        <div class="main__header">
+            <h1 class="main__title">Технологии</h1>
+        </div>
+        <div class="card-list card-list_column">
+            <div>При создании проекта были коварно использованы:</div>
+            <ul class="shopping-list">
+                <li class="shopping-list__item">Python 3.9</li>
+                <li class="shopping-list__item">Django 3.2</li>
+                <li class="shopping-list__item">Django REST Framework</li>
+                <li class="shopping-list__item">HTML</li>
+                <li class="shopping-list__item">CSS</li>
+                <li class="shopping-list__item">JS</li>
+                <li class="shopping-list__item">PostgreSQL</li>
+                <li class="shopping-list__item">Docker</li>
+                <li class="shopping-list__item">свободно доступный код из официальной документации, StackOverflow, GitHub и т.д.</li>
+            </ul>
+        </div>
+    </main>
+</body>
+    {% block scripts %}
+        <script src="{% static 'js/components/MainCards.js'%}"></script>
+        <script src="{% static 'js/components/Purchases.js'%}"></script>
+        <script src="{% static 'js/components/Favorites.js'%}"></script>
+        <script src="{% static 'js/config/config.js'%}"></script>
+        <script src="{% static 'js/components/CardList.js'%}"></script>
+        <script src="{% static 'js/components/Header.js'%}"></script>
+        <script src="{% static 'js/api/Api.js'%}"></script>
+        <script src="{% static 'indexAuth.js'%}"></script>
+    {% endblock %}
+{% endblock %}
