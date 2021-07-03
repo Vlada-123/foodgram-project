@@ -1,5 +1,5 @@
 {% load recipe_filters %}
-{% if not request|is_in_purchases:recipe %}
+{% if not request|is_in_shoplist:recipe %}
     {% if main_recipe %}<li class="single-card__item">{% endif%}
     <button class="button {% if main_recipe %}button_style_blue{% else %}button_style_light-blue{% endif%}" name="purchases" data-out><span class="icon-plus button-icon"></span>Добавить в покупки</button>
     </li>
