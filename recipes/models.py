@@ -12,11 +12,9 @@ class Recipe(models.Model):
                              max_length=128)
     pub_date = models.DateTimeField(verbose_name='дата публикации',
                                     auto_now_add=True,
-                                    blank=True,
                                     db_index=True)
     image = models.ImageField(verbose_name='изображение',
                               upload_to='recipes/',
-                              blank=True,
                               null=True)
     description = models.TextField(verbose_name='описание')
     tags = models.ManyToManyField('Tag',
@@ -29,17 +27,17 @@ class Recipe(models.Model):
                                                          'ingredient'))
     cooking_time = models.PositiveIntegerField(
         verbose_name='время приготовления',
-        default=0,
-        null=True
+        default=1
     )
 
 
 class Ingredient(models.Model):
     title = models.CharField(verbose_name='название ингредиента',
                              max_length=128,
-                             db_index=True, )
+                             unique=True,
+                             db_index=True)
     dimension = models.CharField(verbose_name='единица измерения',
-                                 max_length=50)
+                                 max_length=32)
 
     class Meta:
         constraints = [models.UniqueConstraint(
@@ -53,7 +51,7 @@ class Ingredient(models.Model):
         return f'{self.title} ({self.dimension})'
 
     class Meta:
-        ordering = ['-pub_date']
+        ordering = ['title']
         verbose_name = 'рецепт'
         verbose_name_plural = 'рецепты'
 

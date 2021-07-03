@@ -5,7 +5,7 @@ from .models import Amount, Ingredient, Recipe, Subscription, Tag
 
 class AmountInline(admin.TabularInline):
     model = Amount
-    fields = ["ingredient", "quantity"]
+    fields = ['ingredient', 'quantity']
 
 
 @admin.register(Recipe)
