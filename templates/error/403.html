@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %} Ошибка 404 {% endblock %}
+{% block static %}
+{% load static %}
+    <link rel="stylesheet" href="{% static 'pages/index.css' %}">
+{% endblock static %}
+{% block content %}
+    {% include 'include/header.html' %}
+<body class="body">
+    <main class="main container">
+        <div class="main__header">
+            <h1 class="main__title">Ошибка 403</h1>
+        </div>
+        <p class="lead">Доступ к странице <code>{{ path }}</code> запрещен</p>
+        <p class="lead"><a href="{% url  'index' %}">Вернуться на главную</a></p>
+    </main>
+</body>
+{% endblock %}
