@@ -3,20 +3,35 @@ from django.db import models
 from users.models import User
 
 
-class Tag(models.Model):
-    name = models.CharField(verbose_name='название тега',
-                            max_length=50, null=True)
-    value = models.CharField(verbose_name='значение тега',
-                             max_length=50, null=True)
-    style = models.CharField(verbose_name='стиль тега',
-                             max_length=50, null=True)
-
-    class Meta:
-        verbose_name = 'тег'
-        verbose_name_plural = 'теги'
-
-    def __str__(self):
-        return self.value
+class Recipe(models.Model):
+    author = models.ForeignKey(User,
+                               verbose_name='автор',
+                               on_delete=models.CASCADE,
+                               related_name='recipes')
+    title = models.CharField(verbose_name='название',
+                             max_length=128)
+    pub_date = models.DateTimeField(verbose_name='дата публикации',
+                                    auto_now_add=True,
+                                    blank=True,
+                                    db_index=True)
+    image = models.ImageField(verbose_name='изображение',
+                              upload_to='recipes/',
+                              blank=True,
+                              null=True)
+    description = models.TextField(verbose_name='описание')
+    tags = models.ManyToManyField('Tag',
+                                  verbose_name='теги',
+                                  related_name='recipes')
+    ingredients = models.ManyToManyField('Ingredient',
+                                         verbose_name='ингредиенты',
+                                         through='Amount',
+                                         through_fields=('recipe',
+                                                         'ingredient'))
+    cooking_time = models.PositiveIntegerField(
+        verbose_name='время приготовления',
+        default=0,
+        null=True
+    )
 
 
 class Ingredient(models.Model):
@@ -36,37 +51,6 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return f'{self.title} ({self.dimension})'
-
-
-class Recipe(models.Model):
-    author = models.ForeignKey(User,
-                               verbose_name='автор',
-                               on_delete=models.CASCADE,
-                               related_name='recipes')
-    title = models.CharField(verbose_name='название',
-                             max_length=128)
-    pub_date = models.DateTimeField(verbose_name='дата публикации',
-                                    auto_now_add=True,
-                                    blank=True,
-                                    db_index=True)
-    image = models.ImageField(verbose_name='изображение',
-                              upload_to='recipes/',
-                              blank=True,
-                              null=True)
-    description = models.TextField(verbose_name='описание')
-    tags = models.ManyToManyField(Tag,
-                                  verbose_name='теги',
-                                  related_name='recipes')
-    ingredients = models.ManyToManyField(Ingredient,
-                                         verbose_name='ингредиенты',
-                                         through='Amount',
-                                         through_fields=('recipe',
-                                                         'ingredient'))
-    cooking_time = models.PositiveIntegerField(
-        verbose_name='время приготовления',
-        default=0,
-        null=True
-    )
 
     class Meta:
         ordering = ['-pub_date']
@@ -98,6 +82,22 @@ class Amount(models.Model):
 
     def __str__(self):
         return self.ingredient.title
+
+
+class Tag(models.Model):
+    name = models.CharField(verbose_name='название тега',
+                            max_length=50, null=True)
+    value = models.CharField(verbose_name='значение тега',
+                             max_length=50, null=True)
+    style = models.CharField(verbose_name='стиль тега',
+                             max_length=50, null=True)
+
+    class Meta:
+        verbose_name = 'тег'
+        verbose_name_plural = 'теги'
+
+    def __str__(self):
+        return self.value
 
 
 class ShopList(models.Model):
