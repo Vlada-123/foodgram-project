@@ -14,8 +14,6 @@ urlpatterns = [
          include('about.urls', namespace='about')),
     path('admin/',
          admin.site.urls),
-    # path('shoplist/',
-    #      include('shoplist.urls')),
     path('auth/',
          include('users.urls')),
     path('',

@@ -13,7 +13,7 @@ from foodgram.settings import RECORDS_ON_PAGE
 from .form import RecipeForm
 from .models import (Amount, Favorite, Ingredient, Recipe, ShopList,
                      Subscription, User)
-from .utils import get_ingredients, define_tags
+from .utils import define_tags, get_ingredients
 
 JSON_FALSE = JsonResponse({'success': False})
 JSON_TRUE = JsonResponse({'success': True})
