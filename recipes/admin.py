@@ -1,39 +1,39 @@
 from django.contrib import admin
 
-from .models import Ingredient, MeasurementUnit, Recipe, RecipeIngredient, Tag
+from .models import Amount, Ingredient, Recipe, Subscription, Tag
 
 
-class IngredientAdmin(admin.ModelAdmin):
-    list_display = ('name', 'unit_of_measurement',)
-    list_filter = ('name',)
-    ordering = ('name',)
-    search_fields = ('name',)
+class AmountInline(admin.TabularInline):
+    model = Amount
+    fields = ["ingredient", "quantity"]
 
 
+@admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author',)
-    list_filter = ('author', 'name', 'tags',)
-    ordering = ('-pub_date', 'name', 'cooking_time',)
-    search_fields = ('name', 'description', 'tags', 'ingredients',)
+    list_display = ('title', 'author')
+    inlines = [AmountInline]
+    list_filter = ('author', 'title', 'tags')
 
 
-class RecipeIngredientAdmin(admin.ModelAdmin):
-    list_display = ('recipe', 'ingredient',)
-    ordering = ('recipe',)
+@admin.register(Ingredient)
+class IngredientAdmin(admin.ModelAdmin):
+    list_display = ('title', 'dimension',)
+    list_filter = ('title',)
+    search_fields = ('title',)
 
 
+@admin.register(Subscription)
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('user', 'author')
+
+
+@admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    ordering = ('name',)
+    list_display = ('value', 'style', 'name')
 
 
-class MeasurementUnitAdmin(admin.ModelAdmin):
-    list_display = ('name',)
-    ordering = ('name',)
-
-
-admin.site.register(Ingredient, IngredientAdmin)
-admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(RecipeIngredient, RecipeIngredientAdmin)
-admin.site.register(Tag, TagAdmin)
-admin.site.register(MeasurementUnit, MeasurementUnitAdmin)
+@admin.register(Amount)
+class RecipeIngredientAdmin(admin.ModelAdmin):
+    list_display = ('pk', 'recipe', 'ingredient', 'quantity',)
+    list_display_links = ('pk', 'recipe')
+    list_filter = ('recipe', 'ingredient',)

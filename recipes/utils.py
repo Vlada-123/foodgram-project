@@ -1,49 +1,37 @@
-from decimal import Decimal
-
-from django.db import IntegrityError, transaction
-from django.http import HttpResponseBadRequest
-from django.shortcuts import get_object_or_404
-
-from recipes.models import Ingredient, Recipe, RecipeIngredient
-
-
-def get_recipes_by_tags(tags):
-    return Recipe.objects.filter(tags__name__in=tags)
+from .models import ShopList, Tag
 
 
 def get_ingredients(request):
-    result = {}
-    for key, value in request.POST.items():
+    ingredients = {}
+    for key in request.POST:
         if key.startswith('nameIngredient'):
-            num = key.split('_')[1]
-            result[value] = request.POST[f'valueIngredient_{num}']
-    return result
+            ingredient_item = key.split('_')[1]
+            ingredients[request.POST[key]] = request.POST[
+                'valueIngredient_' + ingredient_item]
+    return ingredients
 
 
-def save_recipe(request, form, author=None):
-    try:
-        recipe = form.save(commit=False)
-        recipe.author = author or request.user
+def get_shoplist(request):
+    shoplist_count = None
+    if request.user.is_authenticated:
+        shoplist_count = ShopList.objects.filter(
+            user=request.user).count()
+    return {'shoplist_count': shoplist_count}
 
-        with transaction.atomic():
-            recipe.save()
-            RecipeIngredient.objects.filter(
-                recipe=recipe
-            ).delete()
 
-            ingredients = get_ingredients(request)
-            recipe_ingredients = []
-            for name, quantity in ingredients.items():
-                ingredient = get_object_or_404(Ingredient, name=name)
-                obj = RecipeIngredient(
-                    recipe=recipe,
-                    ingredient=ingredient,
-                    quantity=abs(Decimal(quantity.replace(',', '.')))
-                )
-                recipe_ingredients.append(obj)
-            RecipeIngredient.objects.bulk_create(recipe_ingredients)
-            form.save_m2m()
-            return recipe
+def define_tags(request):
+    all_tags = Tag.objects.all()
+    request_tags = request.GET.getlist('tags')
 
-    except IntegrityError:
-        return HttpResponseBadRequest
+    active_tags = {}
+
+    for tag in all_tags:
+        if tag.value in request_tags:
+            active_tags[tag.value] = {'status': True,
+                                      'name': tag.name,
+                                      'style': tag.style}
+        else:
+            active_tags[tag.value] = {'status': False,
+                                      'name': tag.name,
+                                      'style': tag.style}
+    return active_tags, request_tags, all_tags
