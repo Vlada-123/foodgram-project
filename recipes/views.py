@@ -199,8 +199,8 @@ def get_purchases(request):
     writer = csv.writer(response)
 
     for item in shoplist:
-        writer.writerow([f"{item['ingredients__title']} "
-                         f"({item['total_quantity']} - "
+        writer.writerow([f"{item['ingredients__title']} - "
+                         f"({item['total_quantity']} "
                          f"{item['ingredients__dimension']})"])
     return response
 
