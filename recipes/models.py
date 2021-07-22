@@ -1,10 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
-
-from users.models import User
 
 
 class Recipe(models.Model):
-    author = models.ForeignKey(User,
+    author = models.ForeignKey(get_user_model(),
                                verbose_name='автор',
                                on_delete=models.CASCADE,
                                related_name='recipes')
@@ -30,6 +29,14 @@ class Recipe(models.Model):
         default=1
     )
 
+    class Meta:
+        ordering = ['-pub_date']
+        verbose_name = 'рецепт'
+        verbose_name_plural = 'рецепты'
+
+    def __str__(self):
+        return self.title
+
 
 class Ingredient(models.Model):
     title = models.CharField(verbose_name='название ингредиента',
@@ -50,31 +57,29 @@ class Ingredient(models.Model):
     def __str__(self):
         return f'{self.title} ({self.dimension})'
 
-    class Meta:
-        ordering = ['title']
-        verbose_name = 'рецепт'
-        verbose_name_plural = 'рецепты'
-
-    def __str__(self):
-        return self.title
-
 
 class Amount(models.Model):
     recipe = models.ForeignKey(Recipe,
                                verbose_name='рецепт',
-                               related_name='recipe_amount',
+                               related_name='recipe_amounts',
                                on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient,
                                    verbose_name='ингредиент',
-                                   on_delete=models.CASCADE,
-                                   related_name='ingredient')
+                                   related_name='ingredient_amounts',
+                                   on_delete=models.CASCADE)
     quantity = models.IntegerField(verbose_name='количество')
 
     class Meta:
-        constraints = [models.UniqueConstraint(
-            fields=['ingredient', 'recipe'],
-            name='unique_ingredient_recipe'
-        )]
+        constraints = [
+            models.UniqueConstraint(
+                fields=['ingredient', 'recipe'],
+                name='unique_ingredient_recipe'
+            ),
+            models.CheckConstraint(
+                check=models.Q(quantity__gte=1),
+                name='quantity_gte_1'
+            ),
+        ]
         verbose_name = 'ингредиент рецепта'
         verbose_name_plural = 'ингредиенты рецепта'
 
@@ -99,7 +104,7 @@ class Tag(models.Model):
 
 
 class ShopList(models.Model):
-    user = models.ForeignKey(User,
+    user = models.ForeignKey(get_user_model(),
                              verbose_name='пользователь',
                              related_name='shoplist',
                              on_delete=models.CASCADE)
@@ -111,6 +116,8 @@ class ShopList(models.Model):
     class Meta:
         constraints = [models.UniqueConstraint(fields=['user', 'recipe'],
                                                name='unique_shoplist')]
+        verbose_name = 'список покупок'
+        verbose_name_plural = 'списки покупок'
 
     def __str__(self):
         return self.recipe.title
@@ -121,7 +128,7 @@ class Favorite(models.Model):
                                verbose_name='рецепт в избранном',
                                related_name='favorite_recipes',
                                on_delete=models.CASCADE)
-    user = models.ForeignKey(User,
+    user = models.ForeignKey(get_user_model(),
                              verbose_name='пользователь',
                              related_name='favorites',
                              on_delete=models.CASCADE)
@@ -130,17 +137,18 @@ class Favorite(models.Model):
         constraints = [models.UniqueConstraint(fields=['recipe', 'user'],
                                                name='UniqueFavorite')]
         verbose_name = 'избранное'
+        verbose_name_plural = 'избранное'
 
     def __str__(self):
         return self.recipe.title
 
 
 class Subscription(models.Model):
-    user = models.ForeignKey(User,
+    user = models.ForeignKey(get_user_model(),
                              verbose_name='подписчик',
                              related_name='follower',
                              on_delete=models.CASCADE)
-    author = models.ForeignKey(User,
+    author = models.ForeignKey(get_user_model(),
                                verbose_name='автор',
                                related_name='following',
                                on_delete=models.CASCADE)
@@ -152,4 +160,4 @@ class Subscription(models.Model):
         verbose_name_plural = 'подписки'
 
     def __str__(self):
-        return f'{self.user} подписан на {self.author}'
+        return f'{self.user} подписан(а) на {self.author}'

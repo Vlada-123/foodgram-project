@@ -1,6 +1,7 @@
 import csv
 import json
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Sum
@@ -11,12 +12,13 @@ from django.views.decorators.http import require_http_methods
 from foodgram.settings import RECORDS_ON_PAGE
 
 from .form import RecipeForm
-from .models import (Amount, Favorite, Ingredient, Recipe, ShopList,
-                     Subscription, User)
+from .models import Favorite, Ingredient, Recipe, ShopList, Subscription
 from .utils import define_tags, get_ingredients
 
 JSON_FALSE = JsonResponse({'success': False})
 JSON_TRUE = JsonResponse({'success': True})
+
+User = get_user_model()
 
 
 def index(request):
@@ -66,7 +68,8 @@ def recipe_view(request, recipe_id):
 
 @login_required()
 def create_recipe(request):
-    form = RecipeForm(request.POST or None, files=request.FILES or None)
+    form = RecipeForm(request.POST or None,
+                      files=request.FILES or None)
     if form.is_valid():
         recipe = form.save(commit=False)
         recipe.author = request.user
@@ -77,12 +80,7 @@ def create_recipe(request):
                           {'form': form,
                            'new': True,
                            'errors': 'Добавьте ингредиент'})
-        for title, quantity in ingredients_add.items():
-            ingredient = get_object_or_404(Ingredient, title=title)
-            ingredient_item = Amount(recipe=recipe,
-                                     ingredient=ingredient,
-                                     quantity=quantity)
-            ingredient_item.save()
+        form.save_recipe(recipe, ingredients_add)
         form.save_m2m()
         return redirect('recipe', recipe_id=recipe.id)
     context = {'form': form, 'new': True}
@@ -102,19 +100,14 @@ def edit_recipe(request, recipe_id):
     if form.is_valid():
         correct_recipe = form.save(commit=False)
         correct_recipe.save()
-        correct_recipe.recipe_amount.all().delete()
+        correct_recipe.recipe_amounts.all().delete()
         ingredients_new = get_ingredients(request)
         if not ingredients_new:
             return render(request, 'create_recipe.html',
                           {'form': form,
                            'new': False,
                            'errors': 'Добавьте ингредиент'})
-        for title, quantity in ingredients_new.items():
-            ingredient = get_object_or_404(Ingredient, title=title)
-            amount = Amount(recipe=correct_recipe,
-                            ingredient=ingredient,
-                            quantity=quantity)
-            amount.save()
+        form.save_recipe(correct_recipe, ingredients_new)
         form.save_m2m()
         return redirect('recipe', recipe_id=recipe.id)
 
@@ -170,14 +163,13 @@ def following(request):
 @login_required
 @require_http_methods(['GET', 'DELETE'])
 def shoplist(request):
+    purchases = Recipe.objects.filter(shoplist__user=request.user)
     if request.method == 'DELETE':
         recipe_id = request.GET.get('recipe_id')
-        removed = ShopList.objects.get(recipe__id=recipe_id).delete()[1]
-        if removed:
-            return JSON_TRUE
-        return JSON_FALSE
+        removable_item = get_object_or_404(Recipe, id=recipe_id)
+        purchases.remove(removable_item)
+        return JSON_TRUE
     if request.method == 'GET':
-        purchases = Recipe.objects.filter(shoplist__user=request.user)
         context = {'purchases': purchases}
         return render(request, 'shoplist.html', context)
 
@@ -191,7 +183,7 @@ def get_purchases(request):
     ).values(
         'ingredients__title', 'ingredients__dimension'
     ).annotate(
-        total_quantity=Sum('recipe_amount__quantity')
+        total_quantity=Sum('recipe_amounts__quantity')
     )
 
     response = HttpResponse(content_type='txt/csv')
@@ -262,3 +254,11 @@ def subscriptions(request, author_id):
         if removed:
             return JSON_TRUE
         return JSON_FALSE
+
+
+def ingredients(request):
+    text = request.GET.get('query')
+    ingredient_list = list(Ingredient.objects.filter(
+        title__istartswith=text).values()
+    )
+    return JsonResponse(ingredient_list, safe=False)
